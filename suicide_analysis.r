@@ -1,11 +1,11 @@
 ###################################################################################
-#title:  MinavÈtelezÈs beadandÛ                                                   #
-#author: Moln·r Bence M·rk                                                        #
-#Output: A fÈlÈv sor·n elsaj·tÌtott mintavÈteli elj·r·sok szimul·ciÛja            # 
+#title:  Minav√©telez√©s beadand√≥                                                   #
+#author: Moln√°r Bence M√°rk                                                        #
+#Output: A f√©l√©v sor√°n elsaj√°t√≠tott mintav√©teli elj√°r√°sok szimul√°ci√≥ja            # 
 ###################################################################################
 
 ###########################
-# Adathalmaz elı·llÌt·sa  #
+# Adathalmaz el≈ë√°ll√≠t√°sa  #
 ###########################
 
 df <- data.frame(alsos_felsos=c(rep("f", 500), 
@@ -20,7 +20,7 @@ df <- data.frame(alsos_felsos=c(rep("f", 500),
                             rnorm(500, 100, 10)))
 
 #######################
-# LeÌrÛ statisztik·k  #
+# Le√≠r√≥ statisztik√°k  #
 #######################
 
 head(df)
@@ -31,16 +31,16 @@ unique(df$alsos_felsos)
 cor(newdf$magassag, newdf$teszt)  #0.5703985
 
 #########################
-# Sokas·gi paramÈterek  #
+# Sokas√°gi param√©terek  #
 #########################
 
 #a teljes populacio merete:
 length(y)
 #1000
-#a popul·ciÛ ·tlaga:
+#a popul√°ci√≥ √°tlaga:
 mean(df$magassag) 
 #149.9011
-#a popul·ciÛ ·tlag·nak varianci·ja:
+#a popul√°ci√≥ √°tlag√°nak varianci√°ja:
 var(df$magassag)  
 #254.8583
 
@@ -48,16 +48,16 @@ var(df$magassag)
 ############################################################################################
 
 #######################
-# VÈletlen mintavÈtel #
+# V√©letlen mintav√©tel #
 #######################
 
 xbar <- apply(replicate(1000, sample(df$magassag, 50)), 2, FUN=mean)
-#apply: oszloponkÈnt ki·tlagoljuk (2) - Ìgy 1000 ·tlagot kaptunk!
+#apply: oszloponk√©nt ki√°tlagoljuk (2) - √≠gy 1000 √°tlagot kaptunk!
 xbar
-#minta·tlagok ·tlaga:
+#minta√°tlagok √°tlaga:
 mean(xbar)
 #149.9251
-#minta·tlagok varianci·ja:
+#minta√°tlagok varianci√°ja:
 var(xbar)
 #4.647555
 hist(xbar)
@@ -70,18 +70,18 @@ sort(xbar)[c(25,975)]
 ############################################################################################
 
 #########################
-# RÈtegzett mintavÈtel  #
+# R√©tegzett mintav√©tel  #
 #########################
 
 #retegek letrehozasa (2 reteg: a = alsos, f = felsos):
 reteg <- df$alsos_felsos
-#az y-ba beleraktam a magassag ÈrtÈkeket:
+#az y-ba beleraktam a magassag √©rt√©keket:
 y <- df$magassag
-#rÈtegek mÈrete:
+#r√©tegek m√©rete:
 table(reteg)
 
-#kiemelj¸k y-bÛl az alsÛs rÈteg elemeit, majd ugyanezt megcsin·ljuk 
-#a felsıs rÈtegre is:
+#kiemelj√ºk y-b√≥l az als√≥s r√©teg elemeit, majd ugyanezt megcsin√°ljuk 
+#a fels≈ës r√©tegre is:
 y1 <- y[reteg=='a']
 print(y1)
 length(y1)  #500
@@ -93,11 +93,11 @@ length(y2)  #500
 mean(y2)    #161.2424
 var(y2)     #224.5927
 
-#Mintaallok·ciÛ: Ha a minta ar·nyos lenne az elemsz·mmal:
+#Mintaallok√°ci√≥: Ha a minta ar√°nyos lenne az elemsz√°mmal:
 table(reteg) / nrow(newdf)        #a:0.5 b:0,5
 table(reteg) / nrow(newdf) * 50   #25;25
 
-#RÈtegeken bel¸li SRS: 
+#R√©tegeken bel√ºli SRS: 
 xbarstrat <- NA
 for (i in 1:1000) {
   xbarstrat[i] <- mean( c(df[sample(500, 25), "magassag"], df[sample(501:1000, 25), "magassag"]))
@@ -114,23 +114,23 @@ sort(xbarstrat)[c(25,975)]
 ############################################################################################
 
 ###########################
-# TˆbblÈpcsıs mintavÈtel  #
+# T√∂bbl√©pcs≈ës mintav√©tel  #
 ###########################
 
-#2 lÈpcsın haladunk vÈgig. 
-#Elıszˆr kivessz¸k az oszt·lyt (First Stage):
+#2 l√©pcs≈ën haladunk v√©gig. 
+#El≈ësz√∂r kivessz√ºk az oszt√°lyt (First Stage):
 sample1 <- sample(unique(df$oszt_azonos_i), 10, replace = FALSE)
-#9 elem˚ mint·t vett¸nk a distinct oszt·lyazonosÌtÛk kˆz¸l.
+#9 elem≈± mint√°t vett√ºnk a distinct oszt√°lyazonos√≠t√≥k k√∂z√ºl.
 sample1
 unique(df$oszt_azonos_i)
-#Ez egy vektor mely 9 elembıl ·ll. 
-#Mi ezen 9 elemen/oszt·lyon bel¸li magass·g ÈrtÈkekre vagyunk kÌv·ncsiak:
+#Ez egy vektor mely 9 elemb≈ël √°ll. 
+#Mi ezen 9 elemen/oszt√°lyon bel√ºli magass√°g √©rt√©kekre vagyunk k√≠v√°ncsiak:
 multidf <- df[df$oszt_azonos_i %in% sample1, ]
-#Ebben a dataframe-be m·r csak az elsı lÈpcsı sor·n kivett 9 vÈletlenszer˚en
-#kiv·lasztott oszt·ly elemei lesznek.
+#Ebben a dataframe-be m√°r csak az els≈ë l√©pcs≈ë sor√°n kivett 9 v√©letlenszer≈±en
+#kiv√°lasztott oszt√°ly elemei lesznek.
 multidf
-#A m·sodik lÈpÈsben (Second Stage) 50 elem˚ vÈletlenmint·t veszek ki a 9 random 
-#oszt·lyon bel¸l:
+#A m√°sodik l√©p√©sben (Second Stage) 50 elem≈± v√©letlenmint√°t veszek ki a 9 random 
+#oszt√°lyon bel√ºl:
 sample2 <- apply(replicate(1000, sample(multidf$magassag, 50, replace=FALSE)), 2, mean)
 mean(sample2)
 #153.7821
@@ -144,13 +144,13 @@ sort(sample2)[c(25,975)]
 ############################################################################################
 
 #######################
-# Klaszter mintavÈtel #
+# Klaszter mintav√©tel #
 #######################
 
-#Elıszˆr random mintavÈtelez¸nk 9 oszt·lyt a sokas·gbÛl:
+#El≈ësz√∂r random mintav√©telez√ºnk 9 oszt√°lyt a sokas√°gb√≥l:
 sampleosztaly <- sample(unique(df$oszt_azonos_i), 9, replace = FALSE)
 sampleosztaly
-#A kiv·lasztott oszt·lyok ˆsszes elmÈt figyelembevessz¸k
+#A kiv√°lasztott oszt√°lyok √∂sszes elm√©t figyelembevessz√ºk
 dfklaszter <- df[df$oszt_azonos_i %in% sampleosztaly, ]
 mean(dfklaszter$magassag)
 #148.2512
@@ -160,11 +160,11 @@ hist(dfklaszter$magassag)
      
 ############################################################################################
 ###########################
-# ÷sszehasonlÌt·s /       #
-# Konkl˙ziÛ               #
+# √ñsszehasonl√≠t√°s /       #
+# Konkl√∫zi√≥               #
 ###########################
 
-#centr·lis eloszl·s 1:
+#centr√°lis eloszl√°s 1:
 par(mfrow=c(1,3))
 hist(xbar, freq=F)
 lines(density(xbar), col="red")
@@ -173,7 +173,7 @@ lines(density(xbarstrat), col="green")
 hist(sample2, freq=F)
 lines(density(sample2), col="blue")
 
-#centr·lis eloszl·s 2:
+#centr√°lis eloszl√°s 2:
 hist(xbar,col="blue",main="SRS vs. Stratified",
      xlab="estimate")
 hist(xbarstrat,add=T,col="lightyellow")
